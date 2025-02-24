@@ -1,0 +1,4 @@
+packageDeclarationVersion: 1
+name: web
+version: 1.0.0
+downloadUrl: git://github.com/pulumi-initech/pulumi-java-component-web-webenvironment
