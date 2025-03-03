@@ -1,4 +1,4 @@
 packageDeclarationVersion: 1
 name: acm
-version: 1.0.2
+version: 1.0.0
 downloadUrl: git://github.com/pulumi-initech/pulumi-java-component-acm-dnsvalidatedcertificate
