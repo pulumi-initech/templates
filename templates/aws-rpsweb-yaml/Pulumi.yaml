@@ -1,6 +1,19 @@
 name: ${PROJECT}
 description: ${DESCRIPTION}
 runtime: yaml
+template:
+  description: An RPS based full-featured web server
+  config:
+    instanceType:
+      type: string
+      default: m3.medium
+    instanceCount:
+      type: integer
+      default: 2
+    scaleInRpsThreshold: 
+      default: 500
+    scaleOutRpsThreshold:
+      default: 1000
 resources:
   cert:
     type: acm:index:DnsValidatedCertificate
@@ -25,18 +38,13 @@ resources:
       subdomain: ${subDomain}
       scaleInRpsThreshold: ${scaleInRpsThreshold}
       scaleOutRpsThreshold: ${scaleOutRpsThreshold}
+      certificateArn: ${cert.certificateArn}
       zoneId:
         fn::invoke:
           function: aws:route53:getZone
           arguments:
             name: ${hostedZoneName}
           return: zoneId
-      certificateArn: ${cert.certificateArn}
 outputs:
   frontendUrl:
     value: https://${web.fqdn}
-config:
-  scaleInRpsThreshold: 
-    default: 500
-  scaleOutRpsThreshold:
-    default: 1000
