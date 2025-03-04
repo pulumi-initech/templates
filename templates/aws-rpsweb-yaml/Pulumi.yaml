@@ -10,17 +10,22 @@ template:
     instanceCount:
       description: The desired number of instances to run
       default: 2
+    subdomainPrefix:
+      description: The subdomain to use for the web server
+      default: www
     scaleInRpsThreshold:
       descpription: The number of requests per second to trigger a scale in event
       default: 500
     scaleOutRpsThreshold:
       description: The number of requests per second to trigger a scale out event
       default: 1000
+variables:
+  subdomain: ${subdomainPrefix}-${pulumi.stack}
 resources:
   cert:
     type: acm:index:DnsValidatedCertificate
     properties:
-      domainName: ${subDomain}.${hostedZoneName}
+      domainName: ${subdomain}.${hostedZoneName}
       zoneName: ${hostedZoneName}
   web:
     type: web:index:WebEnvironment
@@ -32,7 +37,7 @@ resources:
       imageId: ${imageId}
       instanceType: ${instanceType}
       instanceCount: ${instanceCount}
-      subdomain: ${subDomain}
+      subdomain: ${subdomain}
       scaleInRpsThreshold: ${scaleInRpsThreshold}
       scaleOutRpsThreshold: ${scaleOutRpsThreshold}
       zoneName: ${hostedZoneName}
