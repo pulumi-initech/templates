@@ -5,26 +5,23 @@ template:
   description: An RPS based full-featured web server
   config:
     instanceType:
-      type: string
+      description: The AWS instance type to use.
       default: m3.medium
     instanceCount:
-      type: integer
+      description: The desired number of instances to run
       default: 2
-    scaleInRpsThreshold: 
+    scaleInRpsThreshold:
+      descpription: The number of requests per second to trigger a scale in event
       default: 500
     scaleOutRpsThreshold:
+      description: The number of requests per second to trigger a scale out event
       default: 1000
 resources:
   cert:
     type: acm:index:DnsValidatedCertificate
     properties:
       domainName: ${subDomain}.${hostedZoneName}
-      zoneId:
-        fn::invoke:
-          function: aws:route53:getZone
-          arguments:
-            name: ${hostedZoneName}
-          return: zoneId
+      zoneName: ${hostedZoneName}
   web:
     type: web:index:WebEnvironment
     properties:
@@ -38,13 +35,8 @@ resources:
       subdomain: ${subDomain}
       scaleInRpsThreshold: ${scaleInRpsThreshold}
       scaleOutRpsThreshold: ${scaleOutRpsThreshold}
+      zoneName: ${hostedZoneName}
       certificateArn: ${cert.certificateArn}
-      zoneId:
-        fn::invoke:
-          function: aws:route53:getZone
-          arguments:
-            name: ${hostedZoneName}
-          return: zoneId
 outputs:
   frontendUrl:
     value: https://${web.fqdn}
