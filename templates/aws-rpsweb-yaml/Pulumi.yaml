@@ -6,18 +6,23 @@ template:
   config:
     instanceType:
       description: The AWS instance type to use.
+      type: String
       default: m3.medium
     instanceCount:
       description: The desired number of instances to run
+      type: Number
       default: 2
     subdomainPrefix:
       description: The subdomain to use for the web server
+      type: String
       default: www
     scaleInRpsThreshold:
       descpription: The number of requests per second to trigger a scale in event
+      type: Number
       default: 500
     scaleOutRpsThreshold:
       description: The number of requests per second to trigger a scale out event
+      type: Number
       default: 1000
 variables:
   subdomain: ${subdomainPrefix}-${pulumi.stack}
